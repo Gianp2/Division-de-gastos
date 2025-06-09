@@ -4,14 +4,12 @@ function agregarPersona() {
   const divPersona = document.createElement("div");
   divPersona.classList.add("persona-aporte");
 
-  // Input para el nombre
   const inputNombre = document.createElement("input");
   inputNombre.type = "text";
   inputNombre.placeholder = "Nombre";
   inputNombre.classList.add("nombre-persona");
   inputNombre.required = true;
 
-  // Input para el aporte
   const inputAporte = document.createElement("input");
   inputAporte.type = "number";
   inputAporte.min = "0";
@@ -22,21 +20,20 @@ function agregarPersona() {
 
   divPersona.appendChild(inputNombre);
   divPersona.appendChild(inputAporte);
-
   personasDiv.appendChild(divPersona);
 }
 
 function calcularGastos() {
   const personasDiv = document.getElementById("personas");
   const resultado = document.getElementById("resultado");
-  const gastoTotalInput = document.getElementById("gastoTotal");
+  resultado.innerHTML = ""; // Limpiar resultado anterior
 
   const nombresInputs = personasDiv.querySelectorAll(".nombre-persona");
   const aportesInputs = personasDiv.querySelectorAll(".aporte-persona");
+  const totalPersonas = nombresInputs.length;
 
-  let totalPersonas = nombresInputs.length;
   if (totalPersonas === 0) {
-    resultado.textContent = "Agrega al menos una persona.";
+    resultado.innerHTML = `<p class="error">Agrega al menos una persona.</p>`;
     return;
   }
 
@@ -47,37 +44,62 @@ function calcularGastos() {
     const aporte = parseFloat(aportesInputs[i].value);
 
     if (!nombre) {
-      resultado.textContent = `Por favor ingresa un nombre para la persona ${i + 1}.`;
+      resultado.innerHTML = `<p class="error">Por favor ingresa un nombre para la persona ${i + 1}.</p>`;
       return;
     }
 
     if (isNaN(aporte) || aporte < 0) {
-      resultado.textContent = `Revisa el aporte de ${nombre}, debe ser un número válido.`;
+      resultado.innerHTML = `<p class="error">Revisa el aporte de <strong>${nombre}</strong>, debe ser un número válido.</p>`;
       return;
     }
 
     aportes.push({ nombre, aporte });
   }
 
-  let totalGastado = parseFloat(gastoTotalInput.value);
+  let totalGastado = parseFloat(document.getElementById("gastoTotal").value);
   if (isNaN(totalGastado) || totalGastado === 0) {
-    totalGastado = aportes.reduce((acc, curr) => acc + curr.aporte, 0);
+    totalGastado = aportes.reduce((acc, p) => acc + p.aporte, 0);
   }
 
   const montoPorPersona = totalGastado / totalPersonas;
 
-  let mensaje = `Total gastado: $${totalGastado.toFixed(2)}.\nCada persona debería poner: $${montoPorPersona.toFixed(2)}.\n\n`;
+  // Mostrar resumen general
+  const resumenGeneral = document.createElement("p");
+  resumenGeneral.innerHTML = `
+    <strong>Total gastado:</strong> $${totalGastado.toFixed(2)}<br>
+    <strong>Cada persona debería poner:</strong> $${montoPorPersona.toFixed(2)}
+  `;
+  resultado.appendChild(resumenGeneral);
+
+  // Mostrar resumen individual
+  const resumenDiv = document.createElement("div");
+  resumenDiv.classList.add("resumen-personas");
 
   aportes.forEach(({ nombre, aporte }) => {
     const diferencia = aporte - montoPorPersona;
+    const personaResumen = document.createElement("div");
+    personaResumen.classList.add("persona-resumen");
+
     if (Math.abs(diferencia) < 0.01) {
-      mensaje += `${nombre} puso lo justo.\n`;
+      personaResumen.textContent = `${nombre} puso lo justo.`;
+      personaResumen.classList.add("justo");
     } else if (diferencia < 0) {
-      mensaje += `${nombre} debe poner $${Math.abs(diferencia).toFixed(2)} más.\n`;
+      personaResumen.textContent = `${nombre} debe poner $${Math.abs(diferencia).toFixed(2)} más.`;
+      personaResumen.classList.add("falta");
     } else {
-      mensaje += `${nombre} puso $${diferencia.toFixed(2)} de más y debe recibir ese monto.\n`;
+      personaResumen.textContent = `${nombre} puso $${diferencia.toFixed(2)} de más y debe recibirlo.`;
+      personaResumen.classList.add("sobra");
     }
+
+    resumenDiv.appendChild(personaResumen);
   });
 
-  resultado.textContent = mensaje;
+  resultado.appendChild(resumenDiv);
+}
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js").catch((err) => {
+      console.error("Error al registrar el Service Worker:", err);
+    });
+  });
 }
