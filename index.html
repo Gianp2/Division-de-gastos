@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>División de Gastos entre Amigos</title>
+  <title>División de Gastos</title>
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#4a90e2" />
 
@@ -25,16 +25,18 @@
     </header>
 
     <section aria-labelledby="personas-titulo">
-      <h2 id="personas-titulo">👥 Personas y Aportes</h2>
+      <h2 id="personas-titulo"> Personas y Aportes 👥</h2>
       <div id="personas" class="personas" role="region" aria-live="polite"></div>
       <div class="botones">
-        <button type="button" onclick="agregarPersona()">➕ Agregar Persona</button>
+        <button type="button" onclick="agregarPersona()">Agregar Persona</button>
       </div>
     </section>
 
     <section aria-labelledby="gastos-titulo">
-      <h2 id="gastos-titulo">💰 Gastos</h2>
+      <h2 id="gastos-titulo"> Gastos 💰</h2>
       <label for="gastoTotal">Total gastado:</label>
+      <br>
+      <br>
       <input
         type="number"
         id="gastoTotal"
@@ -47,14 +49,14 @@
     </section>
 
     <section class="botones">
-      <button type="button" onclick="calcularGastos()">📊 Calcular</button>
+      <button type="button" onclick="calcularGastos()">Calcular</button>
     </section>
 
     <section id="resultado" class="resultado" aria-live="polite"></section>
   </main>
 
   <footer>
-    <p>© 2025 Gianluca Pasquinelli. Todos los derechos reservados.</p>
+    <p>© 2025 Pasquinelli Gianluca. Todos los derechos reservados.</p>
   </footer>
 
   <script src="script.js" defer></script>
