@@ -2,7 +2,7 @@
 
 Aplicación web simple e intuitiva para dividir gastos entre varias personas. Ideal para viajes, cenas en grupo, actividades compartidas, etc.
 
-![Screenshot](https://via.placeholder.com/800x400.png?text=Captura+de+pantalla+de+la+app) <!-- Cambia esto por una imagen real de tu app -->
+![Screenshot]("C:\Users\gianp\OneDrive\Imágenes\Capturas de pantalla\Captura de pantalla 2025-06-10 160522.png") <!-- Cambia esto por una imagen real de tu app -->
 
 ## 🚀 Funcionalidades
 
